@@ -1,0 +1,229 @@
+:root {
+  --hero-radius: 26px;
+  --hero-shadow: 0 28px 56px rgba(14, 20, 34, 0.34);
+}
+
+.hero3d {
+  position: relative;
+  width: min(940px, 92vw);
+  aspect-ratio: 16 / 9;
+  border-radius: var(--hero-radius);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition:
+    transform var(--hero-transition, 320ms) cubic-bezier(0.19, 1, 0.22, 1),
+    box-shadow 260ms ease;
+  box-shadow: var(--hero-shadow);
+  background:
+    radial-gradient(
+      circle at 15% 18%,
+      rgba(255, 255, 255, 0.22),
+      rgba(255, 255, 255, 0) 30%
+    ),
+    radial-gradient(
+      circle at 84% 82%,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0) 36%
+    ),
+    linear-gradient(140deg, #141a25, #1e324f 60%, #304f77);
+}
+
+.hero3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.hero3d-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(var(--hero-depth, 40px)) scale(1.02);
+  transform-style: preserve-3d;
+  filter: saturate(1.03) contrast(1.02);
+}
+
+.hero3d-content {
+  position: absolute;
+  left: 7%;
+  bottom: 10%;
+  z-index: 2;
+  max-width: min(560px, 80%);
+  transform: translateZ(calc(var(--hero-depth, 40px) + 28px));
+  color: #f9fbff;
+  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.hero3d-glare {
+  position: absolute;
+  inset: -2%;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  mix-blend-mode: screen;
+}
+
+@media (max-width: 768px) {
+  .hero3d {
+    aspect-ratio: 4 / 5;
+  }
+
+  .hero3d-content {
+    left: 8%;
+    right: 8%;
+    bottom: 8%;
+    max-width: none;
+  }
+}
+
+.hero3d-project-root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+  padding: clamp(8px, 2.2vw, 26px);
+  overflow: hidden;
+}
+
+.hero3d-project-list-wrap,
+.project-list-wrap {
+  width: min(1320px, 100%);
+  height: min(860px, 100%);
+  display: grid;
+  place-items: center;
+  transform-style: preserve-3d;
+  overflow: visible;
+  perspective: 7000px;
+  pointer-events: none;
+}
+
+.hero3d-project-list {
+  position: relative;
+  width: min(1120px, 86vw);
+  height: min(760px, 72vh);
+  max-width: 100%;
+  max-height: 100%;
+  overflow: visible;
+  transform-style: preserve-3d;
+  transform-origin: 50% 56%;
+  display: flex;
+  flex-flow: column-reverse;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  transition: transform var(--hero-project-transition, 320ms)
+    cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.hero3d-project-item {
+  position: relative;
+  width: min(800px, 78vw);
+  margin: 0;
+  margin-top: -10vh;
+  margin-bottom: -10vh;
+  height: 35vh;
+  aspect-ratio: 40 / 17;
+  object-fit: cover;
+  z-index: 99;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition: transform var(--hero-project-transition, 320ms)
+    cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.hero3d-project-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--hero-project-aspect, 16 / 9);
+  border-radius: 0;
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  background-position: center;
+  background-size: cover;
+  pointer-events: auto;
+  transform-style: preserve-3d;
+  transition:
+    transform 240ms ease,
+    box-shadow 240ms ease;
+  box-shadow: 0 30px 50px rgba(7, 15, 33, 0.35);
+}
+
+.hero3d-project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    0deg,
+    rgba(9, 14, 29, 0.48),
+    rgba(9, 14, 29, 0.1) 40%,
+    rgba(9, 14, 29, 0)
+  );
+}
+
+.hero3d-project-card:hover {
+  box-shadow: 0 42px 65px rgba(6, 14, 31, 0.42);
+}
+
+.hero3d-project-title {
+  position: absolute;
+  left: clamp(16px, 3vw, 30px);
+  bottom: clamp(14px, 2.8vw, 26px);
+  z-index: 2;
+  font-size: clamp(20px, 2.8vw, 50px);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+}
+
+.hero3d-project-solid {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  background: linear-gradient(
+    175deg,
+    rgba(255, 255, 255, 0),
+    rgba(10, 14, 23, 0.8)
+  );
+}
+
+@media (max-width: 900px) {
+  .hero3d-project-root {
+    perspective-origin: 50% 60%;
+  }
+
+  .hero3d-project-list-wrap,
+  .project-list-wrap {
+    width: min(100%, 980px);
+    height: min(100%, 760px);
+  }
+
+  .hero3d-project-list {
+    width: min(95vw, 900px);
+    height: min(680px, 68vh);
+    transform-origin: 50% 58%;
+  }
+
+  .hero3d-project-item {
+    width: min(88vw, 700px);
+  }
+}

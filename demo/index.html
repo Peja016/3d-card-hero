@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hero-stand-3d Demo</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;800&display=swap");
+
+      :root {
+        --bg-1: #09203f;
+        --bg-2: #537895;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        font-family: "Noto Sans TC", sans-serif;
+        color: #f4f8ff;
+        background:
+          radial-gradient(
+            circle at 18% 14%,
+            rgba(255, 255, 255, 0.18),
+            transparent 32%
+          ),
+          radial-gradient(
+            circle at 86% 80%,
+            rgba(255, 255, 255, 0.14),
+            transparent 40%
+          ),
+          linear-gradient(132deg, var(--bg-1), var(--bg-2));
+        overflow: hidden;
+      }
+
+      .wrap {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .title {
+        position: fixed;
+        top: 16px;
+        left: 18px;
+        margin: 0;
+        font-size: clamp(22px, 3vw, 38px);
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        z-index: 30;
+      }
+
+      .subtitle {
+        position: fixed;
+        top: 64px;
+        left: 18px;
+        margin: 0;
+        opacity: 0.9;
+        z-index: 30;
+      }
+
+      .controls {
+        position: fixed;
+        left: 18px;
+        top: 98px;
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin: 0;
+        max-width: min(720px, calc(100vw - 36px));
+        z-index: 30;
+      }
+
+      .control {
+        display: grid;
+        gap: 4px;
+        min-width: 190px;
+        font-size: 14px;
+      }
+
+      input[type="range"] {
+        width: 100%;
+      }
+
+      .meta {
+        position: fixed;
+        left: 18px;
+        bottom: 14px;
+        margin: 0;
+        font-size: 13px;
+        opacity: 0.86;
+        z-index: 30;
+      }
+
+      #heroDemo {
+        position: absolute;
+        inset: 0;
+      }
+
+      @media (max-width: 768px) {
+        .title {
+          top: 12px;
+          left: 12px;
+        }
+
+        .subtitle {
+          top: 50px;
+          left: 12px;
+          font-size: 13px;
+        }
+
+        .controls {
+          top: 78px;
+          left: 12px;
+          gap: 10px;
+          max-width: calc(100vw - 24px);
+        }
+
+        .meta {
+          left: 12px;
+          right: 12px;
+          bottom: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <h1 class="title">hero-stand-3d Demo</h1>
+      <p class="subtitle">Cards are stacked in a standing 3D layout.</p>
+
+      <section class="controls">
+        <label class="control" for="shiftRange">
+          hoverShift: <span id="shiftText">0</span>
+          <input id="shiftRange" type="range" min="0" max="44" value="0" />
+        </label>
+
+        <label class="control" for="densityRange">
+          density: <span id="densityText">0.30</span>
+          <input
+            id="densityRange"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.30"
+          />
+        </label>
+
+        <label class="control" for="mouseDynamicToggle">
+          Mouse Dynamic
+          <input id="mouseDynamicToggle" type="checkbox" checked />
+        </label>
+
+        <label class="control" for="angleXRange">
+          baseAngleX: <span id="angleXText">70</span>
+          <input
+            id="angleXRange"
+            type="range"
+            min="0"
+            max="90"
+            step="0.1"
+            value="70"
+          />
+        </label>
+
+        <label class="control" for="angleYRange">
+          baseAngleY: <span id="angleYText">0</span>
+          <input id="angleYRange" type="range" min="-16" max="16" value="0" />
+        </label>
+
+        <label class="control" for="angleZRange">
+          baseAngleZ: <span id="angleZText">40</span>
+          <input id="angleZRange" type="range" min="0" max="64" value="40" />
+        </label>
+      </section>
+
+      <div id="heroDemo"></div>
+
+      <p class="meta">
+        Test focus: standing cards, centered layout, adjustable density and
+        hover shift.
+      </p>
+    </main>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
