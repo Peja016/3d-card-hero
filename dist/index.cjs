@@ -1,55 +1,76 @@
 "use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
+  if ((from && typeof from === "object") || typeof from === "function") {
     for (let key of __getOwnPropNames(from))
       if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+        __defProp(to, key, {
+          get: () => from[key],
+          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
+        });
   }
   return to;
 };
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __toESM = (mod, isNodeMode, target) => (
+  (target = mod != null ? __create(__getProtoOf(mod)) : {}),
+  __copyProps(
+    // If the importer is in node compatibility mode or this is not an ESM
+    // file that has been converted to a CommonJS file using a Babel-
+    // compatible transform (i.e. "__esModule" has not been set), then set
+    // "default" to the CommonJS "module.exports" for node compatibility.
+    isNodeMode || !mod || !mod.__esModule
+      ? __defProp(target, "default", { value: mod, enumerable: true })
+      : target,
+    mod,
+  )
+);
+var __toCommonJS = (mod) =>
+  __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/index.ts
 var index_exports = {};
 __export(index_exports, {
+  HeroCardContainer: () => HeroCardContainer,
   createHero3D: () => createHero3D,
-  createHero3DProjectList: () => createHero3DProjectList
+  createHero3DProjectList: () => createHero3DProjectList,
 });
 module.exports = __toCommonJS(index_exports);
+var React = __toESM(require("react"), 1);
 var DEFAULT_OPTIONS = {
   maxRotate: 11,
   scaleOnHover: 1.02,
   transitionMs: 320,
   depth: 40,
-  glare: true
+  glare: true,
 };
 var DEFAULT_PROJECT_LIST_OPTIONS = {
   baseAngles: {
     x: 70,
     y: 0,
-    z: 40
+    z: 40,
   },
   hoverRotate: 0,
   hoverShift: 0,
   density: 0.3,
-  enableMouseDynamic: false,
+  enableMouseDynamic: true,
   resetOnPointerLeave: false,
   transitionMs: 320,
   cardAspectRatio: "16 / 9",
-  className: ""
+  className: "",
 };
 var DEFAULT_PROJECT_LIST_BASE_ANGLES = {
   x: 70,
   y: 0,
-  z: 40
+  z: 40,
 };
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
@@ -89,22 +110,22 @@ function createHero3D(element, userOptions = {}) {
     const rect = element.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    const px = x / rect.width * 2 - 1;
-    const py = y / rect.height * 2 - 1;
+    const px = (x / rect.width) * 2 - 1;
+    const py = (y / rect.height) * 2 - 1;
     const rotateY = clamp(
       px * options.maxRotate,
       -options.maxRotate,
-      options.maxRotate
+      options.maxRotate,
     );
     const rotateX = clamp(
       -py * options.maxRotate,
       -options.maxRotate,
-      options.maxRotate
+      options.maxRotate,
     );
     element.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(${options.scaleOnHover})`;
     if (glareLayer) {
-      const gx = Math.round(x / rect.width * 100);
-      const gy = Math.round(y / rect.height * 100);
+      const gx = Math.round((x / rect.width) * 100);
+      const gy = Math.round((y / rect.height) * 100);
       glareLayer.style.opacity = "1";
       glareLayer.style.background = `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,255,255,0.45), rgba(255,255,255,0.03) 34%, rgba(255,255,255,0) 56%)`;
     }
@@ -145,32 +166,38 @@ function normalizeProjectListOptions(userOptions) {
   const baseAngles = {
     x: toNumber(userOptions.baseAngles?.x, DEFAULT_PROJECT_LIST_BASE_ANGLES.x),
     y: toNumber(userOptions.baseAngles?.y, DEFAULT_PROJECT_LIST_BASE_ANGLES.y),
-    z: toNumber(userOptions.baseAngles?.z, DEFAULT_PROJECT_LIST_BASE_ANGLES.z)
+    z: toNumber(userOptions.baseAngles?.z, DEFAULT_PROJECT_LIST_BASE_ANGLES.z),
   };
   return {
     items: userOptions.items,
     baseAngles,
     hoverRotate: toNumber(
       userOptions.hoverRotate,
-      DEFAULT_PROJECT_LIST_OPTIONS.hoverRotate
+      DEFAULT_PROJECT_LIST_OPTIONS.hoverRotate,
     ),
     hoverShift: toNumber(
       userOptions.hoverShift,
-      DEFAULT_PROJECT_LIST_OPTIONS.hoverShift
+      DEFAULT_PROJECT_LIST_OPTIONS.hoverShift,
     ),
     density: clamp(
       toNumber(userOptions.density, DEFAULT_PROJECT_LIST_OPTIONS.density),
       0,
-      1
+      1,
     ),
-    enableMouseDynamic: userOptions.enableMouseDynamic ?? DEFAULT_PROJECT_LIST_OPTIONS.enableMouseDynamic,
-    resetOnPointerLeave: userOptions.resetOnPointerLeave ?? DEFAULT_PROJECT_LIST_OPTIONS.resetOnPointerLeave,
+    enableMouseDynamic:
+      userOptions.enableMouseDynamic ??
+      DEFAULT_PROJECT_LIST_OPTIONS.enableMouseDynamic,
+    resetOnPointerLeave:
+      userOptions.resetOnPointerLeave ??
+      DEFAULT_PROJECT_LIST_OPTIONS.resetOnPointerLeave,
     transitionMs: toNumber(
       userOptions.transitionMs,
-      DEFAULT_PROJECT_LIST_OPTIONS.transitionMs
+      DEFAULT_PROJECT_LIST_OPTIONS.transitionMs,
     ),
-    cardAspectRatio: userOptions.cardAspectRatio ?? DEFAULT_PROJECT_LIST_OPTIONS.cardAspectRatio,
-    className: userOptions.className ?? DEFAULT_PROJECT_LIST_OPTIONS.className
+    cardAspectRatio:
+      userOptions.cardAspectRatio ??
+      DEFAULT_PROJECT_LIST_OPTIONS.cardAspectRatio,
+    className: userOptions.className ?? DEFAULT_PROJECT_LIST_OPTIONS.className,
   };
 }
 function createCardAnchor(item) {
@@ -199,7 +226,13 @@ function createCardAnchor(item) {
   card.appendChild(solid);
   return card;
 }
-function setProjectListTransform(listElement, options, rotateDeltaX = 0, rotateDeltaY = 0, rotateDeltaZ = 0) {
+function setProjectListTransform(
+  listElement,
+  options,
+  rotateDeltaX = 0,
+  rotateDeltaY = 0,
+  rotateDeltaZ = 0,
+) {
   const rx = options.baseAngles.x + rotateDeltaX;
   const ry = options.baseAngles.y + rotateDeltaY;
   const rz = options.baseAngles.z + rotateDeltaZ;
@@ -207,7 +240,7 @@ function setProjectListTransform(listElement, options, rotateDeltaX = 0, rotateD
 }
 function applyStackDensityLayout(listElement, options) {
   const listItems = Array.from(
-    listElement.querySelectorAll(":scope > .hero3d-project-item")
+    listElement.querySelectorAll(":scope > .hero3d-project-item"),
   );
   const density = clamp(options.density, 0, 1);
   const overlapVh = 4 + density * 16;
@@ -231,7 +264,7 @@ function createHero3DProjectList(element, userOptions) {
   }
   if (!Array.isArray(userOptions.items) || userOptions.items.length === 0) {
     throw new Error(
-      "createHero3DProjectList: options.items must be a non-empty array."
+      "createHero3DProjectList: options.items must be a non-empty array.",
     );
   }
   let options = normalizeProjectListOptions(userOptions);
@@ -251,14 +284,10 @@ function createHero3DProjectList(element, userOptions) {
       return;
     }
     clearCardListeners();
-    const cards = listElement.querySelectorAll(
-      ":scope .hero3d-project-card"
-    );
+    const cards = listElement.querySelectorAll(":scope .hero3d-project-card");
     cards.forEach((card) => {
       const listItem = card.closest(".hero3d-project-item");
-      const solid = card.querySelector(
-        ":scope .hero3d-project-solid"
-      );
+      const solid = card.querySelector(":scope .hero3d-project-solid");
       const onEnter = () => {
         const hoverShiftPx = options.hoverShift > 0 ? options.hoverShift : 8;
         if (listItem) {
@@ -294,7 +323,7 @@ function createHero3DProjectList(element, userOptions) {
     }
     element.style.setProperty(
       "--hero-project-transition",
-      `${options.transitionMs}ms`
+      `${options.transitionMs}ms`,
     );
     element.style.setProperty("--hero-project-aspect", options.cardAspectRatio);
     listElement = document.createElement("div");
@@ -302,7 +331,8 @@ function createHero3DProjectList(element, userOptions) {
     listWrapElement.className = "hero3d-project-list-wrap project-list-wrap";
     listWrapElement.style.transformStyle = "preserve-3d";
     listWrapElement.style.willChange = "transform";
-    listWrapElement.style.transform = "translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)";
+    listWrapElement.style.transform =
+      "translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg)";
     listElement.className = "hero3d-project-list";
     listElement.classList.add("project-list");
     listElement.setAttribute("role", "list");
@@ -337,22 +367,22 @@ function createHero3DProjectList(element, userOptions) {
     const rect = element.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    const px = x / rect.width * 2 - 1;
-    const py = y / rect.height * 2 - 1;
+    const px = (x / rect.width) * 2 - 1;
+    const py = (y / rect.height) * 2 - 1;
     const rotateDeltaY = clamp(
       px * options.hoverRotate,
       -options.hoverRotate,
-      options.hoverRotate
+      options.hoverRotate,
     );
     const rotateDeltaX = clamp(
       -py * options.hoverRotate,
       -options.hoverRotate,
-      options.hoverRotate
+      options.hoverRotate,
     );
     const rotateDeltaZ = clamp(
       px * options.hoverRotate * 0.85,
       -options.hoverRotate,
-      options.hoverRotate
+      options.hoverRotate,
     );
     let mouseDynamicDeltaX = 0;
     let mouseDynamicDeltaZ = 0;
@@ -366,7 +396,7 @@ function createHero3DProjectList(element, userOptions) {
       options,
       rotateDeltaX + mouseDynamicDeltaX,
       rotateDeltaY,
-      rotateDeltaZ + mouseDynamicDeltaZ
+      rotateDeltaZ + mouseDynamicDeltaZ,
     );
   };
   const onPointerLeave = () => {
@@ -397,8 +427,8 @@ function createHero3DProjectList(element, userOptions) {
       items: nextItems,
       baseAngles: {
         ...options.baseAngles,
-        ...nextOptions.baseAngles
-      }
+        ...nextOptions.baseAngles,
+      },
     });
     render();
     bindListPointerRotate();
@@ -417,8 +447,67 @@ function createHero3DProjectList(element, userOptions) {
   };
   return { destroy, update };
 }
+function HeroCardContainer(props) {
+  const {
+    items,
+    baseAngles,
+    hoverRotate,
+    hoverShift,
+    density,
+    enableMouseDynamic,
+    resetOnPointerLeave,
+    transitionMs,
+    cardAspectRatio,
+    className,
+    style,
+    ...domProps
+  } = props;
+  const containerRef = React.useRef(null);
+  React.useEffect(() => {
+    const element = containerRef.current;
+    if (!element) {
+      return;
+    }
+    const instance = createHero3DProjectList(element, {
+      items,
+      baseAngles,
+      hoverRotate,
+      hoverShift,
+      density,
+      enableMouseDynamic,
+      resetOnPointerLeave,
+      transitionMs,
+      cardAspectRatio,
+      className,
+    });
+    return () => {
+      instance.destroy();
+    };
+  }, [
+    items,
+    baseAngles?.x,
+    baseAngles?.y,
+    baseAngles?.z,
+    hoverRotate,
+    hoverShift,
+    density,
+    enableMouseDynamic,
+    resetOnPointerLeave,
+    transitionMs,
+    cardAspectRatio,
+    className,
+  ]);
+  return React.createElement("div", {
+    ref: containerRef,
+    className,
+    style,
+    ...domProps,
+  });
+}
 // Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {
-  createHero3D,
-  createHero3DProjectList
-});
+0 &&
+  (module.exports = {
+    HeroCardContainer,
+    createHero3D,
+    createHero3DProjectList,
+  });

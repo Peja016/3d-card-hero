@@ -1,4 +1,5 @@
 // src/index.ts
+import * as React from "react";
 var DEFAULT_OPTIONS = {
   maxRotate: 11,
   scaleOnHover: 1.02,
@@ -392,7 +393,65 @@ function createHero3DProjectList(element, userOptions) {
   };
   return { destroy, update };
 }
+function HeroCardContainer(props) {
+  const {
+    items,
+    baseAngles,
+    hoverRotate,
+    hoverShift,
+    density,
+    enableMouseDynamic,
+    resetOnPointerLeave,
+    transitionMs,
+    cardAspectRatio,
+    className,
+    style,
+    ...domProps
+  } = props;
+  const containerRef = React.useRef(null);
+  React.useEffect(() => {
+    const element = containerRef.current;
+    if (!element) {
+      return;
+    }
+    const instance = createHero3DProjectList(element, {
+      items,
+      baseAngles,
+      hoverRotate,
+      hoverShift,
+      density,
+      enableMouseDynamic,
+      resetOnPointerLeave,
+      transitionMs,
+      cardAspectRatio,
+      className
+    });
+    return () => {
+      instance.destroy();
+    };
+  }, [
+    items,
+    baseAngles?.x,
+    baseAngles?.y,
+    baseAngles?.z,
+    hoverRotate,
+    hoverShift,
+    density,
+    enableMouseDynamic,
+    resetOnPointerLeave,
+    transitionMs,
+    cardAspectRatio,
+    className
+  ]);
+  return React.createElement("div", {
+    ref: containerRef,
+    className,
+    style,
+    ...domProps
+  });
+}
 export {
+  HeroCardContainer,
   createHero3D,
   createHero3DProjectList
 };

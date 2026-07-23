@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 type Hero3DOptions = {
     maxRotate?: number;
     scaleOnHover?: number;
@@ -37,7 +39,9 @@ type Hero3DProjectListInstance = {
     destroy: () => void;
     update: (nextOptions: Partial<Hero3DProjectListOptions>) => void;
 };
+type HeroCardContainerProps = Hero3DProjectListOptions & React.HTMLAttributes<HTMLDivElement>;
 declare function createHero3D(element: HTMLElement, userOptions?: Hero3DOptions): Hero3DInstance;
 declare function createHero3DProjectList(element: HTMLElement, userOptions: Hero3DProjectListOptions): Hero3DProjectListInstance;
+declare function HeroCardContainer(props: HeroCardContainerProps): React.ReactElement;
 
-export { type Hero3DAngles, type Hero3DInstance, type Hero3DOptions, type Hero3DProjectItem, type Hero3DProjectListInstance, type Hero3DProjectListOptions, createHero3D, createHero3DProjectList };
+export { type Hero3DAngles, type Hero3DInstance, type Hero3DOptions, type Hero3DProjectItem, type Hero3DProjectListInstance, type Hero3DProjectListOptions, HeroCardContainer, type HeroCardContainerProps, createHero3D, createHero3DProjectList };

@@ -1,3 +1,5 @@
+import * as React from "react";
+
 export type Hero3DOptions = {
   maxRotate?: number;
   scaleOnHover?: number;
@@ -42,6 +44,9 @@ export type Hero3DProjectListInstance = {
   destroy: () => void;
   update: (nextOptions: Partial<Hero3DProjectListOptions>) => void;
 };
+
+export type HeroCardContainerProps = Hero3DProjectListOptions &
+  React.HTMLAttributes<HTMLDivElement>;
 
 type NormalizedHero3DProjectListOptions = Omit<
   Required<Hero3DProjectListOptions>,
@@ -547,4 +552,68 @@ export function createHero3DProjectList(
   };
 
   return { destroy, update };
+}
+
+export function HeroCardContainer(props: HeroCardContainerProps): React.ReactElement {
+  const {
+    items,
+    baseAngles,
+    hoverRotate,
+    hoverShift,
+    density,
+    enableMouseDynamic,
+    resetOnPointerLeave,
+    transitionMs,
+    cardAspectRatio,
+    className,
+    style,
+    ...domProps
+  } = props;
+
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    const element = containerRef.current;
+
+    if (!element) {
+      return;
+    }
+
+    const instance = createHero3DProjectList(element, {
+      items,
+      baseAngles,
+      hoverRotate,
+      hoverShift,
+      density,
+      enableMouseDynamic,
+      resetOnPointerLeave,
+      transitionMs,
+      cardAspectRatio,
+      className,
+    });
+
+    return () => {
+      instance.destroy();
+    };
+  }, [
+    items,
+    baseAngles?.x,
+    baseAngles?.y,
+    baseAngles?.z,
+    hoverRotate,
+    hoverShift,
+    density,
+    enableMouseDynamic,
+    resetOnPointerLeave,
+    transitionMs,
+    cardAspectRatio,
+    className,
+  ]);
+
+  return React.createElement("div", {
+    ref: containerRef,
+    className,
+    style,
+    ...domProps,
+  });
 }

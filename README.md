@@ -1,42 +1,38 @@
 # Card Reveal Background
 
-A lightweight package for creating a standing 3D card-reveal background effect.
+A React-friendly package for creating a standing 3D card reveal background effect.
 
-This package is centered around `createHero3DProjectList`, which accepts a single props object and renders a stacked card scene with a fixed base tilt, per-card hover behavior, optional mouse-driven dynamics, and adjustable density.
+The main entry point is `HeroCardContainer`, which accepts a single props object and renders a stacked card scene with a fixed base tilt, per-card hover behavior, optional mouse-driven dynamics, and adjustable density.
 
 ## Install
 
 ```bash
-npm install hero-stand-3d
+npm install hero-stand-3d react react-dom
 ```
 
-## Quick Start
+## Basic Usage
 
-```html
-<div id="heroList"></div>
-```
-
-```ts
-import { createHero3DProjectList } from "hero-stand-3d";
+```tsx
+import { HeroCardContainer } from "hero-stand-3d";
 import "hero-stand-3d/style.css";
 
-const el = document.getElementById("heroList");
-
-if (el) {
-  createHero3DProjectList(el, {
-    items: [
-      { image: "/images/a.jpg", href: "/a" },
-      { image: "/images/b.jpg", href: "/b" },
-      { image: "/images/c.jpg", href: "/c" },
-    ],
-    baseAngles: { x: 70, y: 0, z: 40 },
-    hoverRotate: 0,
-    hoverShift: 0,
-    density: 0.3,
-    enableMouseDynamic: false,
-    resetOnPointerLeave: false,
-    cardAspectRatio: "16 / 9",
-  });
+export default function App() {
+  return (
+    <HeroCardContainer
+      items={[
+        { image: "/images/a.jpg", href: "/a" },
+        { image: "/images/b.jpg", href: "/b" },
+        { image: "/images/c.jpg", href: "/c" },
+      ]}
+      baseAngles={{ x: 70, y: 0, z: 40 }}
+      hoverRotate={0}
+      hoverShift={0}
+      density={0.3}
+      enableMouseDynamic={true}
+      resetOnPointerLeave={false}
+      cardAspectRatio="16 / 9"
+    />
+  );
 }
 ```
 
@@ -101,7 +97,17 @@ Then open:
 
 ## API
 
+### `HeroCardContainer`
+
+```tsx
+import { HeroCardContainer } from "hero-stand-3d";
+```
+
+Use `HeroCardContainer` when you want a React component interface. It accepts the same props listed above and internally mounts the card scene for you.
+
 ### `createHero3DProjectList(element, props)`
+
+You can still use the imperative DOM API directly if you prefer.
 
 Returns:
 
@@ -112,7 +118,7 @@ Returns:
 
 Legacy single-card mode is still available.
 
-```ts
+```tsx
 import { createHero3D } from "hero-stand-3d";
 import "hero-stand-3d/style.css";
 
@@ -126,6 +132,16 @@ if (heroEl) {
     glare: true,
   });
 }
+```
+
+## Publish
+
+```bash
+npm run check
+npm run build
+npm run pack:check
+npm login
+npm publish --access public
 ```
 
 Before publishing, make sure the package name in `package.json` is available on npm.
