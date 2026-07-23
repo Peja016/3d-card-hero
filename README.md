@@ -133,15 +133,3 @@ if (heroEl) {
   });
 }
 ```
-
-## Publish
-
-```bash
-npm run check
-npm run build
-npm run pack:check
-npm login
-npm publish --access public
-```
-
-Before publishing, make sure the package name in `package.json` is available on npm.
