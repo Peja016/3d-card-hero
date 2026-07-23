@@ -1,17 +1,79 @@
-# hero-stand-3d
+# Card Reveal Background
 
-A publishable npm package for a 3D standing hero/project-card stack.
+A lightweight package for creating a standing 3D card-reveal background effect.
 
-## Features
+This package is centered around `createHero3DProjectList`, which accepts a single props object and renders a stacked card scene with a fixed base tilt, per-card hover behavior, optional mouse-driven dynamics, and adjustable density.
 
-- Multi-image 3D stacked card list
-- Fixed base tilt on the list plane
-- Cards stand up from that plane
-- Per-card hover shift
-- Adjustable stack density
-- Optional mouse-driven dynamic tilt
+## Install
 
-## Demo (Local)
+```bash
+npm install hero-stand-3d
+```
+
+## Quick Start
+
+```html
+<div id="heroList"></div>
+```
+
+```ts
+import { createHero3DProjectList } from "hero-stand-3d";
+import "hero-stand-3d/style.css";
+
+const el = document.getElementById("heroList");
+
+if (el) {
+  createHero3DProjectList(el, {
+    items: [
+      { image: "/images/a.jpg", href: "/a" },
+      { image: "/images/b.jpg", href: "/b" },
+      { image: "/images/c.jpg", href: "/c" },
+    ],
+    baseAngles: { x: 70, y: 0, z: 40 },
+    hoverRotate: 0,
+    hoverShift: 0,
+    density: 0.3,
+    enableMouseDynamic: false,
+    resetOnPointerLeave: false,
+    cardAspectRatio: "16 / 9",
+  });
+}
+```
+
+## Props
+
+| Prop                  | Type                                     |                  Default | Description                                          |
+| --------------------- | ---------------------------------------- | -----------------------: | ---------------------------------------------------- |
+| `items`               | `Hero3DProjectItem[]`                    |                 required | Array of cards to render                             |
+| `baseAngles`          | `{ x?: number; y?: number; z?: number }` | `{ x: 70, y: 0, z: 40 }` | Initial tilt of the outer list plane                 |
+| `hoverRotate`         | `number`                                 |                      `0` | Additional pointer-driven rotation range             |
+| `hoverShift`          | `number`                                 |                      `0` | Hover lift in pixels                                 |
+| `density`             | `number`                                 |                    `0.3` | Stack compactness from loose (`0`) to dense (`1`)    |
+| `enableMouseDynamic`  | `boolean`                                |                  `false` | Enables pointer-based X/Z angle dynamics             |
+| `resetOnPointerLeave` | `boolean`                                |                  `false` | If `true`, the stack returns to base angles on leave |
+| `transitionMs`        | `number`                                 |                    `320` | Transition duration in milliseconds                  |
+| `cardAspectRatio`     | `string`                                 |                 `16 / 9` | Card aspect ratio                                    |
+| `className`           | `string`                                 |                     `""` | Extra class name applied to the root element         |
+
+### Item props
+
+| Prop             | Type     | Default  | Description                       |
+| ---------------- | -------- | -------- | --------------------------------- |
+| `image`          | `string` | required | Background image URL              |
+| `title`          | `string` | optional | Optional card title               |
+| `href`           | `string` | `"#"`    | Card link URL                     |
+| `target`         | `string` | optional | Link target, for example `_blank` |
+| `overlayOpacity` | `number` | `0.52`   | Default overlay opacity           |
+
+## Behavior
+
+- The outer `project-list-wrap` stays flat in 3D space.
+- The inner `project-list` is tilted with the configured base angles.
+- Each `project-item` stands upright using `rotateX(-90deg) rotateY(0deg) rotateZ(0deg)`.
+- Hovering a card lifts it, fades the overlay, and brings it to the front.
+- If `enableMouseDynamic` is enabled, pointer movement adjusts the base angles around the center point.
+
+## Demo
 
 ### 1. Install dependencies
 
@@ -29,62 +91,26 @@ Then open:
 
 - http://localhost:5173/
 
-### 3. What to verify
+### 3. What to check
 
-- Cards are standing in 3D and centered in the viewport
-- Hover on each card raises the card and fades overlay
-- Density slider changes stack compactness
-- Base angles update the plane orientation correctly
-- Mobile viewport still renders correctly
+- Cards stand upright and stay centered in the viewport
+- Hovering a card lifts it and fades its overlay
+- Density changes the stack spacing
+- The mouse dynamic toggle changes pointer behavior
+- The layout still looks correct on mobile
 
-## Install
+## API
 
-```bash
-npm install hero-stand-3d
-```
+### `createHero3DProjectList(element, props)`
 
-## Usage (Project List)
+Returns:
 
-```html
-<div id="heroList"></div>
-```
+- `destroy()` - removes the rendered content and listeners
+- `update(partialProps)` - updates options and/or items
 
-```ts
-import { createHero3DProjectList } from "hero-stand-3d";
-import "hero-stand-3d/style.css";
+### `createHero3D(element, options)`
 
-const el = document.getElementById("heroList");
-
-if (el) {
-  createHero3DProjectList(el, {
-    items: [
-      { image: "https://example.com/a.jpg", href: "/a" },
-      { image: "https://example.com/b.jpg", href: "/b" },
-      { image: "https://example.com/c.jpg", href: "/c" },
-    ],
-    baseAngles: { x: 70, y: 0, z: 40 },
-    hoverRotate: 0,
-    hoverShift: 0,
-    density: 0.3,
-    enableMouseDynamic: false,
-    cardAspectRatio: "16 / 9",
-  });
-}
-```
-
-## Legacy Single Card Mode
-
-You can still use the single-card API:
-
-```html
-<div class="hero3d" id="hero">
-  <img class="hero3d-image" src="/your-image.jpg" alt="Hero" />
-  <div class="hero3d-content">
-    <h1>Powerful Visual</h1>
-    <p>3D standing scene with mouse rotate.</p>
-  </div>
-</div>
-```
+Legacy single-card mode is still available.
 
 ```ts
 import { createHero3D } from "hero-stand-3d";
@@ -102,58 +128,14 @@ if (heroEl) {
 }
 ```
 
-## API
-
-### createHero3D(element, options)
-
-- element: HTMLElement root element (recommended class: hero3d)
-- options.maxRotate (number, default 11): max X/Y rotate range
-- options.scaleOnHover (number, default 1.02): hover scale
-- options.transitionMs (number, default 320): return transition
-- options.depth (number, default 40): Z-axis depth lift
-- options.glare (boolean, default true): enable glare layer
-
-Returns:
-
-- destroy(): remove listeners and cleanup
-- update(partialOptions): runtime option update
-
-### createHero3DProjectList(element, options)
-
-- options.items (required): array of card items
-- item.image (string): image URL
-- item.title (string, optional): card title
-- item.href (string, optional): card URL
-- item.target (string, optional): e.g. \_blank
-- item.overlayOpacity (number, optional): overlay opacity
-- options.baseAngles (default { x: 70, y: 0, z: 40 }): list base tilt
-- options.hoverRotate (default 0): additional rotate by pointer movement
-- options.hoverShift (default 0): hover shift in px
-- options.density (default 0.3): layout compactness (0 loose, 1 dense)
-- options.enableMouseDynamic (default false): enable pointer-driven X/Z angle dynamics
-- options.resetOnPointerLeave (default false): reset to base angles when pointer leaves; false keeps the last pose
-- options.transitionMs (default 320): transition duration
-- options.cardAspectRatio (default 16 / 9): card ratio
-- options.className (default ""): extra class for root element
-
-Returns:
-
-- destroy(): remove content and listeners
-- update(partialOptions): update options and/or items
-
-## Pre-publish Check
+## Publish
 
 ```bash
 npm run check
 npm run build
 npm run pack:check
-```
-
-## Publish to npm
-
-```bash
 npm login
 npm publish --access public
 ```
 
-Before publishing, confirm the name field in package.json is available on npm.
+Before publishing, make sure the package name in `package.json` is available on npm.
