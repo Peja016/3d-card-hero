@@ -16,7 +16,7 @@ var DEFAULT_PROJECT_LIST_OPTIONS = {
   hoverRotate: 0,
   hoverShift: 0,
   density: 0.3,
-  enableMouseDynamic: false,
+  enableMouseDynamic: true,
   resetOnPointerLeave: false,
   transitionMs: 320,
   cardAspectRatio: "16 / 9",
