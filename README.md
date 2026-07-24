@@ -45,7 +45,7 @@ export default function App() {
 | `hoverRotate`         | `number`                                 |                      `0` | Additional pointer-driven rotation range             |
 | `hoverShift`          | `number`                                 |                      `0` | Hover lift in pixels                                 |
 | `density`             | `number`                                 |                    `0.3` | Stack compactness from loose (`0`) to dense (`1`)    |
-| `enableMouseDynamic`  | `boolean`                                |                  `false` | Enables pointer-based X/Z angle dynamics             |
+| `enableMouseDynamic`  | `boolean`                                |                   `true` | Enables pointer-based X/Z angle dynamics             |
 | `resetOnPointerLeave` | `boolean`                                |                  `false` | If `true`, the stack returns to base angles on leave |
 | `transitionMs`        | `number`                                 |                    `320` | Transition duration in milliseconds                  |
 | `cardAspectRatio`     | `string`                                 |                 `16 / 9` | Card aspect ratio                                    |

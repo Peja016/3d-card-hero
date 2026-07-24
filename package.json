@@ -30,7 +30,8 @@
     "check": "tsc --noEmit",
     "demo": "vite demo",
     "demo:build": "vite build demo",
-    "pack:check": "npm pack --dry-run"
+    "pack:check": "npm pack --dry-run",
+    "prepublishOnly": "npm run check && npm run build"
   },
   "keywords": [
     "hero",
